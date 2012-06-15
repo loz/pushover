@@ -17,3 +17,5 @@ env[:db] = env[:dbconfigs][env[:mode]]
 #Establish Connection
 ActiveRecord::Base.establish_connection(env[:db])
 
+models = File.expand_path('../../models/*.rb', __FILE__)
+Dir[models].each {|f| require f }
