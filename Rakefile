@@ -1,3 +1,7 @@
+task(:environment) do
+  require File.expand_path('../config/environment.rb', __FILE__)
+end
+
 namespace :db do
   desc "Migrate the database"
   task(:migrate => :environment) do
