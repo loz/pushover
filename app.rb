@@ -1,5 +1,5 @@
 require 'sinatra'
 
 get '/' do
-  'Deployed Successfully'
+  "Deployed Successfully<br/><pre>#{env.inscpect}</pre>"
 end
