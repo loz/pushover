@@ -1,4 +1,7 @@
 *.gem
+.DS_store
+tags
+gems.tags
 *.swp
 *.rbc
 .bundle

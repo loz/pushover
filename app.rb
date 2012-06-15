@@ -1,5 +1,8 @@
+require 'config/environment'
 require 'sinatra'
 
-get '/' do
-  "Deployed Successfully<br/><tt>#{settings.environment}</tt>"
+class App < Sinatra::Application
+  get '/' do
+    erb :welcome
+  end
 end
