@@ -3,6 +3,7 @@ require 'yaml'
 require 'logger'
 require 'erb'
 require 'omniauth'
+require 'rack/utils'
 
 #Load database.yml
 config_file = File.expand_path("../database.yml", __FILE__)

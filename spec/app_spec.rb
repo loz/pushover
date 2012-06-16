@@ -172,7 +172,25 @@ describe App do
       end
 
       context "when it has messages" do
-        it "lists messages"
+        before :each do
+          @e.messages.create :method => :post,
+            :body => "something=value&another=too",
+            :headers => {:some => :headers}
+          @e.messages.create :method => :get,
+            :query => "another=value&another=too",
+            :headers => {:more => :heads}
+          get '/endpoints/%s/view' % @e.uid
+        end
+
+        it "lists messages" do
+          body_str = last_response.body.gsub("\n", '')
+          body_str.should match /POST/
+          body_str.should match /Headers.*some.*headers/
+          body_str.should match /Body.*something=value&amp;another=too/
+          body_str.should match /GET/
+          body_str.should match /Headers.*more.*heads/
+          body_str.should match /Query.*another=value&amp;another=too/
+        end
       end
     end
   end

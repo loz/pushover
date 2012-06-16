@@ -1,0 +1,21 @@
+<div class='well'>
+  <h3><%= @message.method.upcase %></h3>
+  <h4>Headers</h4>
+  <table class='table'>
+    <tbody>
+      <% @message.headers.each do |k,v| %>
+        <tr>
+          <th style='width: 100px;'><%= k %></th>
+          <td style='width: 600px; overflow-x: none;'><%= v %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% if @message.body.blank? %>
+    <h4>Query</h4>
+    <%= Rack::Utils.escape_html @message.query %>
+  <% else %>
+    <h4>Body</h4>
+    <%= Rack::Utils.escape_html @message.body %>
+  <% end %>
+</div>

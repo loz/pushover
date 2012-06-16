@@ -25,6 +25,23 @@ class App < Sinatra::Application
     end]
   end
 
+
+  def save_message(uid, method)
+    data = {
+      :method => method,
+      :headers => headers
+    }
+    case method
+    when :post
+      data[:body] = request.body.string.dup
+    else
+      data[:query] = request.query_string.dup
+    end
+    @endpoint = Endpoint.find_by_uid(uid)
+    @endpoint.messages.create data
+    ''
+  end
+
   get '/' do
     erb :welcome
   end
@@ -38,20 +55,11 @@ class App < Sinatra::Application
   end
 
   get '/endpoints/:uid' do |uid|
-    @endpoint = Endpoint.find_by_uid(uid)
-    @endpoint.messages.create :method => :get,
-      :query => request.query_string,
-      :headers => headers
-    ''
+    save_message(uid, :get)
   end
 
   post '/endpoints/:uid' do |uid|
-    @endpoint = Endpoint.find_by_uid(uid)
-    @endpoint.messages.create :method => :post,
-      :query => request.query_string,
-      :body => request.body.read,
-      :headers => headers
-    ''
+    save_message(uid, :post)
   end
 
   get '/endpoints/:uid/view' do |uid|
