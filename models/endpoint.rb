@@ -2,6 +2,7 @@ require 'securerandom'
 
 class Endpoint < ActiveRecord::Base
   belongs_to :user
+  has_many :messages
 
   before_validation :generate_uid, :on => :create
 

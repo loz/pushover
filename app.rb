@@ -18,6 +18,13 @@ class App < Sinatra::Application
     redirect '/' unless current_user
   end
 
+  def headers
+    Hash[env.select {|k,v| k.starts_with? 'HTTP_'}.map do |k,v|
+      name = k.gsub(/^HTTP_/, '').split('_').map {|p| p.downcase.camelize}.join('-')
+      [name , v]
+    end]
+  end
+
   get '/' do
     erb :welcome
   end
@@ -28,6 +35,23 @@ class App < Sinatra::Application
     endpoint = current_user.endpoints.create
     ref = endpoint.uid
     redirect '/endpoints/%s/view' % ref
+  end
+
+  get '/endpoints/:uid' do |uid|
+    @endpoint = Endpoint.find_by_uid(uid)
+    @endpoint.messages.create :method => :get,
+      :query => request.query_string,
+      :headers => headers
+    ''
+  end
+
+  post '/endpoints/:uid' do |uid|
+    @endpoint = Endpoint.find_by_uid(uid)
+    @endpoint.messages.create :method => :post,
+      :query => request.query_string,
+      :body => request.body.read,
+      :headers => headers
+    ''
   end
 
   get '/endpoints/:uid/view' do |uid|

@@ -103,6 +103,41 @@ describe App do
     end
   end
 
+  describe '/endpoints/:uid' do
+    before :each do
+      @endpoint = user.endpoints.create
+      @uid = @endpoint.uid
+      @path = "/endpoints/#{@uid}"
+    end
+
+    it "responds with OK" do
+      get @path
+      last_response.should be_ok
+    end
+
+    it "saves message for GET requests" do
+      path = "#{@path}?var1=value&var2=value"
+      expect { get path, {}, {'HTTP_SOME' => 'header'} }.to change {Message.count }.by(1)
+      message = @endpoint.messages.last
+      message.should be
+      message.method.should == 'get'
+      message.query.should == 'var1=value&var2=value'
+      message.headers['Some'].should == 'header'
+    end
+
+    it "saves message for POST requests" do
+      expect { post @path, { :some => :body}, {'HTTP_ANOTHER_HEADER' => 'value'} }.to change {Message.count }.by(1)
+      message = @endpoint.messages.last
+      message.should be
+      message.method.should == 'post'
+      message.body.should == 'some=body'
+      message.headers['Another-Header'].should == 'value'
+    end
+
+    it "saves message for PUT requests"
+    it "saves message for DELETE requests"
+  end
+
   describe '/endpoints/:uid/view' do
     context "with no user" do
       before :each do
