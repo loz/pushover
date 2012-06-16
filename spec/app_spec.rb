@@ -6,6 +6,10 @@ describe App do
 
   let(:app) { subject }
 
+  def setup_session(session)
+    Rack::Session::Abstract::SessionHash.stub(:new).and_return(session)
+  end
+
   describe '/' do
     before :each do
       get '/'
@@ -19,6 +23,18 @@ describe App do
     context "when there is no user in session" do
       it "renders the sign in message" do
         last_response.body.should include "/auth/github"
+      end
+    end
+
+    context "when there is a user in the session" do
+      before :each do
+        @user = User.create :uid => 1234, :name => 'a_user'
+        setup_session :userid => @user.id
+        get '/'
+      end
+
+      it "does not render sign in" do
+        last_response.body.should_not include "/auth/github"
       end
     end
   end

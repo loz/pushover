@@ -10,7 +10,12 @@ class App < Sinatra::Application
   end
 
   get '/' do
-    erb :welcome
+    if session[:userid]
+      ''
+      #erb :welcome
+    else
+      erb :welcome
+    end
   end
 
   get '/auth/github/callback' do
