@@ -1,2 +1,5 @@
 <h1>Welcome to Pushover</h1>
-<%= erb :signin %>
+<%= erb :overview %>
+<% if current_user %>
+  <%= erb :endpoints %>
+<% end %>

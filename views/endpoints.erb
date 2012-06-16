@@ -1,0 +1,11 @@
+<% endpoints = current_user.endpoints %>
+<% unless endpoints.empty? %>
+  <h2>You have the following enpoints to push to</h2>
+  <ul class="nav nav-tabs nav-stacked">
+    <% endpoints.each do |e| %>
+      <li><a href="/endpoints/<%= e.uid %>/view"><%= e.uid %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>You have no endpoints, <a href="./new">create one</a>.</p>
+<% end %>

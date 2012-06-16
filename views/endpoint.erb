@@ -1,0 +1,9 @@
+<div class="container">
+  <div class="hero-unit">
+    <h1>Messages to endpoint</h1>
+    <p>This page lists all the messages sent to this endpoint.</p>
+    <% link = url("/endpoints/#{@endpoint.uid}") %>
+    <p>To send messages, simply register <a href="<%= link %>"><%= link %></a> as your endpoint in a push message system (e.g. github hooks)</p>
+  </div>
+  <p>No messages have been received.</p>
+</div>

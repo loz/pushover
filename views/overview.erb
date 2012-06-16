@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="hero-unit">
+    <% if current_user %>
+      <h1>Welcome, <%= current_user.name %></h1>
+    <% else %>
+      <h1>Pushover</h1>
+    <% end %>
+    <p>Pushover lets you send you push notifications over to a local host, by capturing them for you.</p>
+    <p>
+    <% if current_user %>
+      <a class="btn btn-success btn-large" href="/new"><span class="icon-plus icon-white"></span>&nbsp;Create New Enpoint</a>
+    <% else %>
+      <a class="btn btn-primary btn-large" href="/auth/github">Sign in with GitHub</a>
+    <% end %>
+    </p>
+  </div>
+</div>
