@@ -38,9 +38,9 @@ class App < Sinatra::Application
 
   get '/auth/github/callback' do
     auth = env['omniauth.auth']
-    user = User.find_by_uid(auth.uid)
+    user = User.find_by_uid(auth.uid.to_s)
     unless user
-      user = User.create :uid => auth.uid, :name => auth.info.nickname
+      user = User.create :uid => auth.uid.to_s, :name => auth.info.nickname
     end
     session[:userid] = user.id
     redirect '/'

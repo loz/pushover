@@ -2,6 +2,7 @@ require 'active_record'
 require 'yaml'
 require 'logger'
 require 'erb'
+require 'omniauth'
 
 #Load database.yml
 config_file = File.expand_path("../database.yml", __FILE__)
@@ -25,6 +26,7 @@ env[:db] = env[:dbconfigs][env[:mode]]
 
 #Establish Connection
 ActiveRecord::Base.logger = logger
+OmniAuth.config.logger = logger
 ActiveRecord::Base.establish_connection(env[:db])
 
 models = File.expand_path('../../models/*.rb', __FILE__)
