@@ -7,6 +7,8 @@ gem 'foreman'
 gem 'activerecord'
 gem 'rake'
 gem 'rack'
+gem 'omniauth'
+gem 'omniauth-github'
 
 group :production do
   gem 'pg'
