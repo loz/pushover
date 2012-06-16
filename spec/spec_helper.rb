@@ -19,7 +19,6 @@ RSpec.configure do |config|
 
   #Transactional Fixtures
   config.around(:each) do |example|
-    User.delete_all
     ActiveRecord::Base.transaction do
       example.run
       raise ActiveRecord::Rollback

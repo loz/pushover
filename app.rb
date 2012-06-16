@@ -13,12 +13,11 @@ class App < Sinatra::Application
     @current_user ||= User.find_by_id(session[:userid])
   end
 
-
   def require_user!
     redirect '/' unless current_user
   end
 
-  def headers
+  def input_headers
     Hash[env.select {|k,v| k.starts_with? 'HTTP_'}.map do |k,v|
       name = k.gsub(/^HTTP_/, '').split('_').map {|p| p.downcase.camelize}.join('-')
       [name , v]
@@ -29,11 +28,11 @@ class App < Sinatra::Application
   def save_message(uid, method)
     data = {
       :method => method,
-      :headers => headers
+      :headers => input_headers
     }
     case method
     when :post
-      data[:body] = request.body.string.dup
+      data[:body] = request.body.read.dup
     else
       data[:query] = request.query_string.dup
     end
@@ -44,6 +43,7 @@ class App < Sinatra::Application
 
   get '/' do
     erb :welcome
+    [200, {'Access-Control-Allow-Origin' => '*'}, erb(:welcome)]
   end
 
 

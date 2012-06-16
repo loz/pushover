@@ -14,8 +14,17 @@
   <% if @message.body.blank? %>
     <h4>Query</h4>
     <%= Rack::Utils.escape_html @message.query %>
+    <h4>Curl Command</h4>
+    <textarea style='width: 100%'>
+curl localhost:3000?<%= @message.query %>
+    </textarea>
   <% else %>
     <h4>Body</h4>
-    <%= Rack::Utils.escape_html @message.body %>
+    <% body = Rack::Utils.escape_html @message.body %>
+    <%= body %>
+    <h4>Curl Command</h4>
+    <textarea style='width: 100%'>
+curl -d "<%=body %>" -H <%= @message.headers.map {|k,v| "#{k}: #{v}"}.join(' -H ') %>
+    </textarea>
   <% end %>
 </div>
